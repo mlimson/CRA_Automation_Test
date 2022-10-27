@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer');
 const chalk = require('chalk');
+const moment = require('moment');
 
 const btn = '#login_button';
 const user = '#login_username';
@@ -24,7 +25,7 @@ const crInput='2000121';
 const drInput='3000121';
 const soaInput='4000121';
 const invoiceInput='5000121';
-const amountInput='1000';
+const amountInput='1,000.00';
 
 beforeAll(async () => {
     browser = await puppeteer.launch({devtools: false, headless: false, defaultViewport: null, args: ['--start-maximized', '--kiosk-printing']});
@@ -134,7 +135,6 @@ describe('Validation for entering Document Details', () => {
         //---------Expected Result---------
         const validatedDate = await page.$('#docu_date.is-valid');
         expect(validatedDate).not.toBeNull();
-        await page.waitForTimeout(2000);
     }, 100000);
 
     //start of TC_SP_007
@@ -148,7 +148,6 @@ describe('Validation for entering Document Details', () => {
         //---------Expected Result---------
         const validatedPo = await page.$('#docu_po.is-valid');
         expect(validatedPo).not.toBeNull();
-        await page.waitForTimeout(2000);
     }, 100000);
 
     //start of TC_SP_008
@@ -162,7 +161,6 @@ describe('Validation for entering Document Details', () => {
         //---------Expected Result---------
         const validatedCr = await page.$('#docu_cr.is-valid');
         expect(validatedCr).not.toBeNull();
-        await page.waitForTimeout(2000);
     }, 100000);
 
     //start of TC_SP_009
@@ -176,7 +174,6 @@ describe('Validation for entering Document Details', () => {
         //---------Expected Result---------
         const validatedDr = await page.$('#docu_dr.is-valid');
         expect(validatedDr).not.toBeNull();
-        await page.waitForTimeout(2000);
     }, 100000);
 
     //start of TC_SP_010
@@ -190,7 +187,6 @@ describe('Validation for entering Document Details', () => {
         //---------Expected Result---------
         const validatedSoa = await page.$('#docu_soa.is-valid');
         expect(validatedSoa).not.toBeNull();
-        await page.waitForTimeout(2000);
     }, 100000);
 
     //start of TC_SP_011
@@ -204,7 +200,6 @@ describe('Validation for entering Document Details', () => {
         //---------Expected Result---------
         const validatedInvoice = await page.$('#docu_invoice.is-valid');
         expect(validatedInvoice).not.toBeNull();
-        await page.waitForTimeout(2000);
     }, 100000);
 
     //start of TC_SP_012
@@ -218,10 +213,70 @@ describe('Validation for entering Document Details', () => {
         //---------Expected Result---------
         const validatedAmount = await page.$('#docu_amount.is-valid');
         expect(validatedAmount).not.toBeNull();
+
+        const disabledButton = await page.$('#step2_next.disabled');
+        expect(disabledButton).toBeNull();
+
         await page.waitForTimeout(2000);
     }, 100000);
 }, 500000),
 
+describe('Validation for Supplier may submit transaction', () => {
+    it('TC_SP_013 Should display encoded document details for review', async () => {
+        console.log(chalk.green('TC_SP_013 Should display encoded document details for review'));
+        await page.waitForTimeout(2000);
+
+        await page.waitForSelector('#step2_next');
+        await page.click('#step2_next');
+
+        await page.waitForTimeout(2000);
+        //---------Expected Result---------
+        const compName = await page.$eval('#company_input', elem => elem.value);
+        expect(compName).toMatch(companyInput);
+        const suppName = await page.$eval('#supplier_input', elem => elem.value);
+        expect(suppName).toMatch(supplierNameInput);
+        const repName = await page.$eval('#rep_name_input', elem => elem.value);
+        expect(repName).toMatch(supplierRepInput);
+        const repEmail = await page.$eval('#rep_mail_input', elem => elem.value);
+        expect(repEmail).toMatch(supplierEmailInput);
+        let docDate = await page.$eval('#docu_date', elem => elem.value);
+        docDate = moment(docDate).format('L');
+        expect(docDate).toMatch(dateInput);
+        const docPO = await page.$eval('#po_number', elem => elem.value);
+        expect(docPO).toMatch(poInput);
+        const docCR = await page.$eval('#cr_number', elem => elem.value);
+        expect(docCR).toMatch(crInput);
+        const docDR = await page.$eval('#dr_number', elem => elem.value);
+        expect(docDR).toMatch(drInput);
+        const docSOA = await page.$eval('#soa_number', elem => elem.value);
+        expect(docSOA).toMatch(soaInput);
+        const docInv = await page.$eval('#invoice_number', elem => elem.value);
+        expect(docInv).toMatch(invoiceInput);
+        const DocAmt = await page.$eval('#amount-input', elem => elem.value);
+        expect(DocAmt).toMatch(amountInput);
+        
+        await page.waitForTimeout(2000);
+    }, 100000);
+
+    it('TC_SP_014 Should submit transaction', async () => {
+        console.log(chalk.green('TC_SP_014 Should submit transaction'));
+        await page.waitForTimeout(2000);
+
+        await page.waitForSelector('#step3_submit');
+        await page.click('#step3_submit');
+
+        await page.waitForSelector('#submit_modal_yes');
+        await page.click('#submit_modal_yes');
+
+        await page.waitForSelector('#submit-modal___BV_modal_content_', {hidden:true});
+
+        //---------Expected Result---------
+        const alert = await page.$eval('div > div > div > div > .alert', elem => elem.innerText);
+        expect(alert).toMatch('Success');
+
+        await page.waitForTimeout(2000);
+    }, 100000);
+}, 500000),
 
 describe.skip('Validation for supplier cannot proceed with incomplete Company and Supplier details form', () => {
     //start of TC_SP_006
