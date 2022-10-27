@@ -120,7 +120,7 @@ describe('Log-in Module', () => {
         await page.waitForTimeout(2000);
 
         const disabledButton = await page.$('#login_button.disabled');
-        expect(disabledButton).not.tobeNull();
+        expect(disabledButton).not.toBeNull();
 
         await page.waitForTimeout(2000);
     }, 100000);
@@ -136,7 +136,7 @@ describe('Log-in Module', () => {
 
         //---------Expected Result---------
         const disabledButton = await page.$('#login_button.disabled');
-        expect(disabledButton).not.tobeNull();
+        expect(disabledButton).not.toBeNull();
 
         await page.waitForTimeout(2000);
     }, 100000);
@@ -152,7 +152,7 @@ describe('Log-in Module', () => {
 
         //---------Expected Result---------
         const disabledButton = await page.$('#login_button.disabled');
-        expect(disabledButton).not.tobeNull();
+        expect(disabledButton).not.toBeNull();
 
         await page.waitForTimeout(2000);
     }, 100000);
