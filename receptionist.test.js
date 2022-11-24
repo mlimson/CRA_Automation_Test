@@ -1,22 +1,23 @@
 const puppeteer = require('puppeteer');
 const chalk = require('chalk');
 const moment = require('moment');
+const config = require('./config');
 
 const btn = '#login_button';
 const user = '#login_username';
 const pass = '#login_password';
 
-const pageURL = 'https://cra-eut.biotechfarms.net/';
-const supplierURL = 'https://cra-eut.biotechfarms.net/supplier';
+const pageURL = config.pageURL;
+const supplierURL = config.supplierURL;
 let page;
 let browser;
 
 //Login credentials
-const Receptionist = "315034530";
+const Receptionist = config.receptionist;
 const Password = "1234";
 
-const companySelect = '4400';
-const supplierSelect= 'V100117';
+const companySelect = config.company;
+const supplierSelect= config.supplierCode;
 
 const companyInput ='Biotech';
 const supplierNameInput ='1070349 BC LTD.';
@@ -49,7 +50,7 @@ afterAll(async () => {
     await browser.close();
 }, 100000);
 
-describe.skip('Validation for supplier can input  Supplier Details', () => {
+describe('Validation for receptionist can acces Supplier Portal', () => {
     //start of TC_RC_001
     it('TC_RC_001 Should access Supplier Portal', async () => {
         console.log(chalk.green('TC_RC_001 Should access Supplier Portal'));
@@ -75,7 +76,7 @@ describe.skip('Validation for supplier can input  Supplier Details', () => {
     }, 100000);
 },500000),
 
-describe.skip('Validation for processing pending transaction', () => {
+describe('Validation for processing pending transaction', () => {
     it('TC_RC_002 Should allow processing pending transaction', async () => {
         console.log(chalk.green('TC_RC_002 Should allow processing pending transaction'));
         await page.waitForTimeout(2000);

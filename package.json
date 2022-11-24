@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "chalk": "^4.1.1",
+    "dotenv": "^16.0.3",
     "jest": "^27.5.1",
     "moment": "^2.29.4",
     "puppeteer": "^10.4.0"

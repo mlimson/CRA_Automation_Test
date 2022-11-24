@@ -1,11 +1,12 @@
 const puppeteer = require('puppeteer');
 const chalk = require('chalk');
+const config = require('./config')
 
 const btn = '#login_button';
 const user = '#login_username';
 const pass = '#login_password';
 
-const pageURL = 'https://cra-eut.biotechfarms.net/';
+const pageURL = config.pageURL;
 let page;
 let browser;
 

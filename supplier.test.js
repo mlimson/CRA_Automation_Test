@@ -1,18 +1,19 @@
 const puppeteer = require('puppeteer');
 const chalk = require('chalk');
 const moment = require('moment');
+const config = require('./config');
 
 const btn = '#login_button';
 const user = '#login_username';
 const pass = '#login_password';
 
-const pageURL = 'https://cra-eut.biotechfarms.net/';
-const supplierURL = 'https://cra-eut.biotechfarms.net/supplier';
+const pageURL = config.pageURL;
+const supplierURL = config.supplierURL;
 let page;
 let browser;
 
 //Login credentials
-const Receptionist = "315034530";
+const Receptionist = config.receptionist;
 const Password = "1234";
 
 const companyInput ='Biotech';
