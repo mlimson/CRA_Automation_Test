@@ -4,7 +4,7 @@ const config = {
         "default",
         ["jest-html-reporters", {
           "publicPath": "./test-results",
-          "filename": "test-results.html",
+          "filename": "accounting-test-results.html",
           "openReport": true
         }]
       ]

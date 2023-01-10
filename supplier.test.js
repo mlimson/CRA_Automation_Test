@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
-const chalk = require('chalk');
 const moment = require('moment');
 const config = require('./config');
+const { uniqueNamesGenerator, adjectives,languages, names } = require('unique-names-generator');
 
 const btn = '#login_button';
 const user = '#login_username';
@@ -16,20 +16,33 @@ let browser;
 const Receptionist = config.receptionist;
 const Password = "1234";
 
-const companyInput ='Biotech';
-const supplierNameInput ='1070349 BC LTD.';
-const supplierRepInput='none';
-const supplierEmailInput='none@email.com';
-const dateInput ='10/24/2022';
-const poInput ='1000121';
-const crInput='2000121';
-const drInput='3000121';
-const soaInput='4000121';
-const invoiceInput='5000121';
-const amountInput='1,000.00';
+const companyInput =config.companyInput;
+const supplierNameInput =config.supplierNameInput;
+const supplierRepInput= uniqueNamesGenerator({dictionaries: [adjectives, languages, names], style: 'capital', separator: ' '});
+const supplierEmailInput=config.supplierEmailInput;
+const dateInput =config.dateInput;
+const poInput =config.poInput;
+const crInput=config.crInput;
+const drInput=config.drInput;
+const soaInput=config.soaInput;
+const invoiceInput=config.invoiceInput;
+const amountInput=config.amountInput;
 
 beforeAll(async () => {
-    browser = await puppeteer.launch({devtools: false, headless: false, defaultViewport: null, args: ['--start-maximized', '--kiosk-printing']});
+    browser = await puppeteer.launch({
+        devtools: false, 
+        headless: true, 
+        defaultViewport: null, 
+        args: [
+            '--start-maximized',
+            '--kiosk-printing',
+            '--disable-gpu',
+            '--disable-dev-shm-usage',
+            '--disable-setuid-sandbox',
+            '--no-sandbox',
+            '--proxy-server=http://192.168.36.35:3128'
+        ]
+        });
     page = await browser.newPage();
 }, 100000);
 
@@ -43,15 +56,12 @@ afterAll(async () => {
 describe('Validation for supplier can input  Supplier Details', () => {
     //start of TC_SP_001
     it('TC_SP_001 Should access Supplier Portal', async () => {
-        console.log(chalk.green('TC_SP_001 Should access Supplier Portal'));
         await page.goto(pageURL);
-
         //input credentials
-        await page.type(user, Receptionist, {delay:50});
-        await page.type(pass,Password, {delay:50});
+        await page.type(user, Receptionist);
+        await page.type(pass,Password);
         //click login btn
         await page.click(btn);
-        await page.waitForNetworkIdle();
 
         await page.waitForSelector('body > #__nuxt > #__layout > div > .sidebar');
         await page.goto(supplierURL);
@@ -64,9 +74,8 @@ describe('Validation for supplier can input  Supplier Details', () => {
 
     //start of TC_SP_002
     it('TC_SP_002 Should input Company Name', async () => {
-        console.log(chalk.green('TC_SP_002 Should input Company Name'));
         await page.waitForSelector('#company_ref');
-        await page.type('#company_ref', companyInput, {delay:50});
+        await page.type('#company_ref', companyInput);
 
         //---------Expected Result---------
         const validatedComp = await page.$('#company_ref.is-valid');
@@ -75,9 +84,8 @@ describe('Validation for supplier can input  Supplier Details', () => {
 
     //start of TC_SP_003
     it('TC_SP_003 Should input Supplier Name', async () => {
-        console.log(chalk.green('TC_SP_003 Should input Supplier Name'));
         await page.waitForSelector('#supplier_ref');
-        await page.type('#supplier_ref', supplierNameInput, {delay:50});
+        await page.type('#supplier_ref', supplierNameInput);
 
         //---------Expected Result---------
         const validatedSupp = await page.$('#supplier_ref.is-valid');
@@ -86,9 +94,8 @@ describe('Validation for supplier can input  Supplier Details', () => {
 
     //start of TC_SP_004
     it('TC_SP_004 Should input Supplier Representative Name', async () => {
-        console.log(chalk.green('TC_SP_003 Should input Supplier Representative Name'));
         await page.waitForSelector('#supplier_rep');
-        await page.type('#supplier_rep', supplierRepInput, {delay:50});
+        await page.type('#supplier_rep', supplierRepInput);
 
         //---------Expected Result---------
         const validatedRep = await page.$('#supplier_rep.is-valid');
@@ -99,9 +106,8 @@ describe('Validation for supplier can input  Supplier Details', () => {
 
     //start of TC_SP_005
     it('TC_SP_005 Should input Supplier Representative E-mail', async () => {
-        console.log(chalk.green('TC_SP_005 Should input Supplier Representative E-mail'));
         await page.waitForSelector('#supplier_email');
-        await page.type('#supplier_email', supplierEmailInput, {delay:50});
+        await page.type('#supplier_email', supplierEmailInput);
 
         //---------Expected Result---------
         const validatedEmail = await page.$('#supplier_email.is-valid');
@@ -112,7 +118,6 @@ describe('Validation for supplier can input  Supplier Details', () => {
 describe('Validation for entering Document Details', () => {
     //start of TC_SP_006
     it('TC_SP_006 Should change Date', async () => {
-        console.log(chalk.green('TC_SP_006 Should change Date'));
         await page.click('#step1_next');
 
         await page.waitForSelector('#docu_date');
@@ -125,7 +130,6 @@ describe('Validation for entering Document Details', () => {
 
     //start of TC_SP_007
     it('TC_SP_007 Should input PO Number', async () => {
-        console.log(chalk.green('TC_SP_007 Should input PO Number'));
         await page.waitForSelector('#docu_po');
         await page.type('#docu_po',poInput,{delay:50});
 
@@ -136,7 +140,6 @@ describe('Validation for entering Document Details', () => {
 
     //start of TC_SP_008
     it('TC_SP_008 Should input CR Number', async () => {
-        console.log(chalk.green('TC_SP_008 Should input CR Number'));
         await page.waitForSelector('#docu_cr');
         await page.type('#docu_cr',crInput,{delay:50});
 
@@ -147,7 +150,6 @@ describe('Validation for entering Document Details', () => {
 
     //start of TC_SP_009
     it('TC_SP_009 Should input DR Number', async () => {
-        console.log(chalk.green('TC_SP_009 Should input DR Number'));
         await page.waitForSelector('#docu_dr');
         await page.type('#docu_dr',drInput,{delay:50});
 
@@ -158,7 +160,6 @@ describe('Validation for entering Document Details', () => {
 
     //start of TC_SP_010
     it('TC_SP_010 Should input SOA Number', async () => {
-        console.log(chalk.green('TC_SP_010 Should input SOA Number'));
         await page.waitForSelector('#docu_soa');
         await page.type('#docu_soa',soaInput,{delay:50});
 
@@ -169,7 +170,6 @@ describe('Validation for entering Document Details', () => {
 
     //start of TC_SP_011
     it('TC_SP_011 Should input Invoice Number', async () => {
-        console.log(chalk.green('TC_SP_011 Should input Invoice Number'));
         await page.waitForSelector('#docu_invoice');
         await page.type('#docu_invoice',invoiceInput,{delay:50});
 
@@ -180,7 +180,6 @@ describe('Validation for entering Document Details', () => {
 
     //start of TC_SP_012
     it('TC_SP_012 Should Input Amount', async () => {
-        console.log(chalk.green('TC_SP_012 Should Input Amount'));
         await page.waitForSelector('#docu_amount');
         await page.type('#docu_amount',amountInput,{delay:50});
 
@@ -195,7 +194,6 @@ describe('Validation for entering Document Details', () => {
 
 describe('Validation for Supplier may submit transaction', () => {
     it('TC_SP_013 Should display encoded document details for review', async () => {
-        console.log(chalk.green('TC_SP_013 Should display encoded document details for review'));
         await page.waitForSelector('#step2_next');
         await page.click('#step2_next');
 
@@ -227,7 +225,6 @@ describe('Validation for Supplier may submit transaction', () => {
     }, 100000);
 
     it('TC_SP_014 Should submit transaction', async () => {
-        console.log(chalk.green('TC_SP_014 Should submit transaction'));
         await page.waitForSelector('#step3_submit');
         await page.click('#step3_submit');
 
@@ -245,8 +242,6 @@ describe('Validation for Supplier may submit transaction', () => {
 describe('Validation for supplier cannot proceed with incomplete Company and Supplier details form', () => {
     //start of TC_SP_006
     it('TC_SP_006 Should not allow null Company Name', async () => {
-        console.log(chalk.green('TC_SP_006 Should not allow null Company Name'));
-
         //---------Expected Result---------
         const disabledButton = await page.$('#step1_next.disabled');
         expect(disabledButton).not.toBeNull();
@@ -254,8 +249,6 @@ describe('Validation for supplier cannot proceed with incomplete Company and Sup
 
     //start of TC_SP_007
     it('TC_SP_007 Should not allow null Supplier', async () => {
-        console.log(chalk.green('TC_SP_007 Should not allow null Supplier'));
-
         //---------Expected Result---------
         const disabledButton = await page.$('#step1_next.disabled');
         expect(disabledButton).not.toBeNull();
