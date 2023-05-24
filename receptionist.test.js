@@ -18,7 +18,7 @@ const Password = "1234";
 const companySelect = config.company;
 const supplierSelect= config.supplierCode;
 
-const transactionNum = config.transactionNum;
+const transactionNum = config.pendingTransaction;
 const supplierRepInput=uniqueNamesGenerator({dictionaries: [adjectives, languages, names], style: 'capital', separator: ' '});
 const supplierEmailInput=config.supplierEmailInput;
 const dateInput =config.dateInput;

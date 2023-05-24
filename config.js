@@ -19,7 +19,10 @@ const config = {
     soaInput:process.env.soaInput,
     invoiceInput:process.env.invoiceInput,
     amountInput:process.env.amountInput,
-    transactionNum: process.env.transactionNum
+    pendingTransaction: process.env.pendingTransaction,
+    printedTransaction: process.env.printedTransaction,
+    validatedTransaction: process.env.validatedTransaction,
+    recounterTransaction: process.env.recounterTransaction
 }
 
 module.exports = config

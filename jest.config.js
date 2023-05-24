@@ -4,7 +4,7 @@ const config = {
         "default",
         ["jest-html-reporters", {
           "publicPath": "./test-results",
-          "filename": "accounting-test-results.html",
+          "filename": "CRA-node18-test-accounting.html",
           "openReport": true
         }]
       ]

@@ -13,7 +13,7 @@ let browser;
 const Accounting = config.accounting;
 const Password = "1234";
 
-const transactionNumber = config.transactionNum;
+const transactionNumber = config.printedTransaction;
 const invoiceNumber = config.invoice;
 
 beforeAll(async () => {
@@ -65,6 +65,8 @@ describe('Validation for Tagging Reference Number', () => {
         
         await page.waitForSelector('#__BVID__146 > .px-0 > #loader > .loader3 > .logo', {hidden: true});
 
+        await page.waitForTimeout(2000);
+
         //Click add button
         await page.waitForSelector('#add_ref_button');
         await page.click('#add_ref_button');
@@ -81,6 +83,8 @@ describe('Validation for Tagging Reference Number', () => {
         //Click Select button
         await page.waitForSelector('#select_ap');
         await page.click('#select_ap');
+
+        await page.waitForTimeout(2000);
         
         //Click Save button
         await page.waitForSelector('#add_ref_btn.mr-2');
