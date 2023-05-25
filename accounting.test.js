@@ -63,7 +63,7 @@ describe('Validation for Tagging Reference Number', () => {
         await page.waitForSelector('#add_ref_btn');
         await page.click('#add_ref_btn');
         
-        await page.waitForSelector('#__BVID__146 > .px-0 > #loader > .loader3 > .logo', {hidden: true});
+        await page.waitForSelector('.px-0 > #loader > .loader3 > .logo', {hidden: true});
 
         await page.waitForTimeout(2000);
 
