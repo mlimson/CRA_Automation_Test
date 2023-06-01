@@ -76,6 +76,7 @@ describe('Validation for Check Releaser can process validated transaction', () =
         //navigate to Reports
         await page.waitForSelector('li > #report > .container > .row > .col');
         await page.click('li > #report > .container > .row > .col');
+        await page.waitForTimeout(2000);
         
         //navigate to Completed tab
         await page.waitForSelector('#cmplted_tab___BV_tab_button__');
