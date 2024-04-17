@@ -41,7 +41,7 @@ beforeAll(async () => {
             '--disable-dev-shm-usage',
             '--disable-setuid-sandbox',
             '--no-sandbox',
-            '--proxy-server=http://192.168.36.35:3128'
+            // '--proxy-server=http://192.168.36.35:3128'
         ]
         });
     page = await browser.newPage();
