@@ -3,8 +3,8 @@ const config = {
     reporters: [
         "default",
         ["jest-html-reporters", {
-          "publicPath": "C:/Users/BFI/Desktop/Myles Limson/Test Results/HANA DEV Server - OS Kernel Updates/CRA",
-          "filename": "CRA-RCI-releaser-HANA_DEV_Server_OS_Kernel_Updates.html",
+          "publicPath": "C:/Users/BFI ITG/Desktop/Automation Tests/CRA/CRA_Automation_Test/reports",
+          "filename": "OrigDev_CRA_Accounting.html",
           "openReport": true
         }]
       ]

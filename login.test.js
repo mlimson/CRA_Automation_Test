@@ -1,9 +1,9 @@
 const puppeteer = require('puppeteer');
 const config = require('./config')
 
-const btn = '#login_button';
-const user = '#login_username';
-const pass = '#login_password';
+const btn = 'button[id="login_button"]';
+const user = 'input[id="login_username"]';
+const pass = 'input[id="login_password"]';
 
 const pageURL = config.pageURL;
 let page;
@@ -11,14 +11,14 @@ let browser;
 
 //Login credentials
 const validUsername = "Admin";
-const validPassword = "1234";
+const validPassword = "b10t3chf@rms";
 const invalidUsername = "SuperAdmin";
 const invalidPassword ="password";
 
 beforeAll(async () => {
     browser = await puppeteer.launch({
-        devtools: false, 
-        headless: true, 
+        devtools: true, 
+        headless: false, 
         defaultViewport: null, 
         args: [
             '--start-maximized',
@@ -27,8 +27,8 @@ beforeAll(async () => {
             '--disable-dev-shm-usage',
             '--disable-setuid-sandbox',
             '--no-sandbox',
-            '--proxy-server=http://192.168.36.35:3128'
-        ]
+            // '--proxy-server=http://192.168.36.35:3128'
+        ],
         });
 }, 100000);
 
@@ -36,16 +36,15 @@ beforeAll(async () => {
 beforeEach(async () => {
     page = await browser.newPage();
 
-    await page.setDefaultNavigationTimeout(0);
 
-    await page.goto(pageURL, {waitUntil: 'networkidle0'});
-    await page.setViewport({
-        width: 1920,
-        height: 1080
-    });
-
+    await page.goto(pageURL);
+    await page.setViewport({width: 1920, height: 1080});
     await page.on('load');
     await page.on('domcontentloaded');
+}, 100000);
+
+afterEach(async() =>{
+    await page.close();
 }, 100000);
 
 afterAll(async () => {
@@ -56,7 +55,7 @@ describe('Log-in Module', () => {
     //start of TC_LG_001
     it('TC_LG_001 Should not allow invalid username and invalid password', async () => {
         //input credentials
-        await page.type(user, invalidUsername);
+        await page.type('#login_username', invalidUsername);
         await page.type(pass,invalidPassword);
         //click login btn
         await page.click(btn);

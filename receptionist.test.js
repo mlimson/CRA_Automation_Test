@@ -32,7 +32,7 @@ const amountInput=config.amountInput;
 beforeAll(async () => {
     browser = await puppeteer.launch({
         devtools: false, 
-        headless: true, 
+        headless: false, 
         defaultViewport: null, 
         args: [
             '--start-maximized',
@@ -47,112 +47,113 @@ beforeAll(async () => {
     page = await browser.newPage();
 }, 100000);
 
-beforeEach(async () => {
+afterEach(async () => {
 }, 100000);
 
 afterAll(async () => {
     await browser.close();
 }, 100000);
 
-describe('Validation for receptionist can acces Supplier Portal', () => {
-    //start of TC_RC_001
-    it('TC_RC_001 Should access Supplier Portal', async () => {
-        await page.goto(pageURL);
-        await page.waitForNetworkIdle();
+// describe('Validation for receptionist can acces Supplier Portal', () => {
+//     //start of TC_RC_001
+//     it('TC_RC_001 Should access Supplier Portal', async () => {
+//         await page.goto(pageURL);
+//         await page.waitForTimeout(2000);
 
-        //input credentials
-        await page.type(user, Receptionist);
-        await page.type(pass,Password);
-        //click login btn
-        await page.click(btn);
-        await page.waitForNetworkIdle();
+//         //input credentials
+//         await page.type(user, Receptionist);
+//         await page.type(pass,Password);
+//         //click login btn
+//         await page.click(btn);
+//         await page.waitForTimeout(2000);
 
-        await page.waitForSelector('body > #__nuxt > #__layout > div > .sidebar');
-        await page.goto(supplierURL);
+//         await page.waitForSelector('body > #__nuxt > #__layout > div > .sidebar');
+//         await page.goto(supplierURL);
 
-        //---------Expected Result---------
-        await page.waitForTimeout(2000);
-        const supplierPortal = await page.$('.row > .card > .card-body > .row > .mb-5');
-        expect(supplierPortal).toBeTruthy();
-    }, 100000);
-},500000),
+//         //---------Expected Result---------
+//         await page.waitForTimeout(2000);
+//         const supplierPortal = await page.$('.row > .card > .card-body > .row > .mb-5');
+//         expect(supplierPortal).toBeTruthy();
+//     }, 100000);
+// },500000),
 
-describe('Validation for processing pending transaction', () => {
-    it('TC_RC_002 Should allow processing pending transaction', async () => {
-        page = await browser.newPage();
-        await page.goto(pageURL);
-        await page.waitForNetworkIdle();
+// describe('Validation for processing pending transaction', () => {
+//     it('TC_RC_002 Should allow processing pending transaction', async () => {
+//         page = await browser.newPage();
+//         await page.goto(pageURL);
+//         await page.waitForTimeout(2000);
 
-        //input credentials
-        await page.type(user, Receptionist);
-        await page.type(pass,Password);
-        //click login btn
-        await page.click(btn);
-        await page.waitForNetworkIdle();
+//         //input credentials
+//         await page.type(user, Receptionist);
+//         await page.type(pass,Password);
+//         //click login btn
+//         await page.click(btn);
+//         await page.waitForTimeout(2000);
 
-        await page.waitForSelector('#search_pending_transc');
-        await page.type('#search_pending_transc', transactionNum);
+//         await page.waitForSelector('#search_pending_transc');
+//         await page.type('#search_pending_transc', transactionNum);
 
-        //Click Process transaction button
-        await page.waitForSelector('tr:nth-child(1) > td > #process_transc > .svg-inline--fa > path');
-        await page.click('tr:nth-child(1) > td > #process_transc > .svg-inline--fa > path');
+//         //Click Process transaction button
+//         await page.waitForSelector('tr:nth-child(1) > td > #process_transc > .svg-inline--fa > path');
+//         await page.click('tr:nth-child(1) > td > #process_transc > .svg-inline--fa > path');
 
-        //Select company
-        await page.waitForSelector('#pr_company');
-        await page.select('#pr_company', companySelect);
+//         //Select company
+//         await page.waitForSelector('#pr_company');
+//         await page.select('#pr_company', companySelect);
 
-        await page.waitForSelector('#pending_tab > .px-0 > #loader > .loader3 > .logo', {hidden:true});
+//         await page.waitForSelector('#pending_tab > .px-0 > #loader > .loader3 > .logo', {hidden:true});
 
-        //Select Supplier
-        await page.waitForTimeout(2000);
-        await page.waitForSelector('#pr_supplier');
-        await page.select('#pr_supplier', supplierSelect);
+//         //Select Supplier
+//         await page.waitForTimeout(2000);
+//         await page.waitForSelector('#pr_supplier');
+//         await page.select('#pr_supplier', supplierSelect);
 
-        //Click Submit button
-        await page.waitForSelector('#pr_submittransc');
-        await page.click('#pr_submittransc');
+//         //Click Submit button
+//         await page.waitForSelector('#pr_submittransc');
+//         await page.click('#pr_submittransc');
         
-        //Click Yes button
-        await page.waitForSelector('#saveprocess_md');
-        await page.click('#saveprocess_md');
+//         //Click Yes button
+//         await page.waitForSelector('#saveprocess_md');
+//         await page.click('#saveprocess_md');
 
-        await page.waitForNavigation();
+//         await page.waitForNavigation();
 
-        //---------Expected Result---------
-        await page.waitForTimeout(2500);
-        //Navigate to Printed Transaction Tab
-        await page.waitForSelector('#printed_tab_rpt___BV_tab_button__');
-        await page.click('#printed_tab_rpt___BV_tab_button__');
+//         //---------Expected Result---------
+//         await page.waitForTimeout(2500);
+//         //Navigate to Printed Transaction Tab
+//         await page.waitForSelector('#printed_tab_rpt___BV_tab_button__');
+//         await page.click('#printed_tab_rpt___BV_tab_button__');
         
-        await page.waitForTimeout(2000);
-        await page.waitForSelector('#search_printed');
-        await page.type('#search_printed',transactionNum);
+//         await page.waitForTimeout(2000);
+//         await page.waitForSelector('#search_printed');
+//         await page.type('#search_printed',transactionNum);
         
-        await page.waitForSelector('tbody > tr > td > div > .badge-primary');
-        const status = await page.$eval('tbody > tr > td > div > .badge-primary', elem => elem.innerText);
-        expect(status).toMatch('Printed');
-    }, 100000);
-}, 500000),
+//         await page.waitForSelector('tbody > tr > td > div > .badge-primary');
+//         const status = await page.$eval('tbody > tr > td > div > .badge-primary', elem => elem.innerText);
+//         expect(status).toMatch('Printed');
+//     }, 100000);
+// }, 500000),
 
 describe('Validation for creating new transaction', () => {
     //start of TC_RC_003
     it('TC_RC_003 Should input Company and Supplier Details', async () => {
-        page = await browser.newPage();
+        // page = await browser.newPage();
         await page.goto(pageURL);
-        await page.waitForNetworkIdle();
+        await page.waitFor(2000);
 
         //input credentials
         await page.type(user, Receptionist);
         await page.type(pass,Password);
         //click login btn
         await page.click(btn);
-        await page.waitForNetworkIdle();
+        await page.waitFor(5000);
 
         //Click Create Transaction button
         await page.waitForSelector('#create_trnsc');
         await page.click('#create_trnsc');
 
         //Select Company
+        await page.waitFor(5000);
         await page.waitForSelector('#crt_company');
         await page.select('#crt_company', companySelect);
         

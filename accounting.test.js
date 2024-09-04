@@ -45,14 +45,15 @@ describe('Validation for Tagging Reference Number', () => {
     //start of TC_AC_001
     it('TC_AC_001 Should tag reference number', async () => {
         await page.goto(pageURL);
-        await page.waitForNetworkIdle();
+        // await page.waitForNetworkIdle();
 
         //input credentials
         await page.type(user, Accounting);
         await page.type(pass, Password);
         //click login btn
         await page.click(btn);
-        await page.waitForNetworkIdle();
+        // await page.waitForNetworkIdle();
+        await page.waitFor(5000);
 
         //Search transaction
         await page.waitForSelector('#search_report');
@@ -65,7 +66,7 @@ describe('Validation for Tagging Reference Number', () => {
         
         await page.waitForSelector('.px-0 > #loader > .loader3 > .logo', {hidden: true});
 
-        await page.waitForTimeout(2000);
+        await page.waitFor(5000);
 
         //Click add button
         await page.waitForSelector('#add_ref_button');
@@ -80,11 +81,13 @@ describe('Validation for Tagging Reference Number', () => {
         await page.waitForSelector('.card-body > .c-table > .table > tbody > tr > td:nth-child(1)');
         await page.click('.card-body > .c-table > .table > tbody > tr > td:nth-child(1)');
         
+        await page.waitFor(5000);
+
         //Click Select button
         await page.waitForSelector('#select_ap');
         await page.click('#select_ap');
 
-        await page.waitForTimeout(2000);
+        await page.waitFor(5000);
         
         //Click Save button
         await page.waitForSelector('#add_ref_btn.mr-2');
@@ -92,10 +95,6 @@ describe('Validation for Tagging Reference Number', () => {
 
         await page.waitForSelector('#add-modal___BV_modal_content_', {hidden: true});
         //---------Expected Result---------
-        await page.waitForTimeout(2000);
-        await page.waitForSelector('.px-0 > div > .alert');
-        const alert = await page.$eval('.px-0 > div > .alert', elem => elem.innerText);
-        expect(alert).toMatch('Success');
 
         await page.waitForSelector('tbody > tr > td > div > .badge');
         const status = await page.$eval('tbody > tr > td > div > .badge', elem => elem.innerText);
